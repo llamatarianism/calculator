@@ -9,13 +9,16 @@
 
 (defn find-place [op stack]
   (loop [new-stack stack output []]
-    (if (or (empty? new-stack) (> (precedence op) (precedence (peek stack))))
+    (if (or (empty? new-stack) (>= (precedence op) (precedence (peek stack))))
       [(conj new-stack op) output]
       (recur (pop new-stack) (conj output (peek new-stack))))))
 
 (defn shunting-yard [s]
   (let [expr (rest (clojure.string/split s #"(?<!\d)|(?!\d)"))]
     (loop [expr expr stack [] output []]
+      (println expr)
+      (println stack)
+      (println output)
       (cond
         ;; Base case.
         (empty? expr)
